@@ -9,6 +9,11 @@ data:
   setup.sh: |-
     touch /tmp/testlog
 
+    npm install -g \
+      request@2.83.0 \
+      request-promise-native@1.0.5 \
+      --ignore-scripts >> /tmp/testlog
+
     mocha --watch >> /tmp/testlog 2>&1
 
   run.sh: |-
