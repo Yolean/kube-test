@@ -22,12 +22,14 @@ data:
     exec >> /tmp/testlog
     exec 2>&1
 
+    tail -n 3 /tmp/testlog > /tmp/lastresult
+    echo ""
+    echo "### Checking latest result, at $(date -u --iso-8601='ns')"
     # exit non-zero unless result of latest mocha run is positive
-    tail -n 1 /tmp/testlog | grep "# fail 0"
     # trigger next run (set periodSeconds in readinessProbe to increase time between checks)
     touch $TESTS
-
-    exit 0
+    # exit 0 only if no failures
+    tail -n 1 /tmp/lastresult | grep "# fail 0" > /dev/null
 
   quit-on-nonzero-exit.sh: |-
     exec >> /tmp/testlog
