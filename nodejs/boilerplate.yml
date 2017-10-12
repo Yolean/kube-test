@@ -10,8 +10,9 @@ data:
     touch /tmp/testlog
 
     #npm install -g \
-    #  request@2.83.0 \
     #  request-promise-native@1.0.5 \
+    #  superagent@3.6.3 \
+    #  supertest@3.0.0 \
     #  --ignore-scripts >> /tmp/testlog
 
     mocha --watch --reporter=tap --preserve-symlinks $TESTS >> /tmp/testlog 2>&1 &
@@ -24,8 +25,8 @@ data:
 
     tail -n 3 /tmp/testlog > /tmp/lastresult
     echo ""
-    echo "### Checking latest result, at $(date -u --iso-8601='ns')"
-    for F in $(ls $TESTS); do echo "# To update $F run: kubectl cp $F $(hostname):$(pwd)/$F"; done
+    echo "### Checking latest result, at $(date -u --iso-8601='seconds') - tests can be updated using:"
+    for F in $(ls $TESTS); do echo "# kubectl cp $F $(hostname):$(pwd)/$F"; done
     # exit non-zero unless result of latest mocha run is positive
     # trigger next run (set periodSeconds in readinessProbe to increase time between checks)
     touch -c $TESTS
@@ -38,12 +39,14 @@ data:
 
     exit 0
 
-  # tests, that you might want to develop using REPL
   test-something.js: |-
+    const expect = require('chai').expect;
+
     describe("A test", () => {
 
       it("Runs through mocha", () => {
         console.log('Running', new Date());
+        expect(true).to.be.ok;
       });
 
     });
@@ -66,7 +69,7 @@ spec:
     spec:
       containers:
       - name: testcase
-        image: solsson/kube-test-nodejs@sha256:1a4933cea8f7da9e5d51ec41ee5bcf8b387b3eb075f8b1e772a3821325fd3301
+        image: solsson/kube-test-nodejs@sha256:bc9c660a4966564031a33402891cc336aa63f017d73f29d8c4b15c5196a4b177
         workingDir: /test
         env:
         - name: TESTS

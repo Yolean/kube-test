@@ -40,3 +40,5 @@ is too heavyweight, a `kubectl cp` based approach might suffice. Could be automa
  * https://superuser.com/questions/181517/how-to-execute-a-command-whenever-a-file-changes
  * https://stackoverflow.com/questions/1515730/is-there-a-command-like-watch-or-inotifywait-on-the-mac
  * https://marketplace.visualstudio.com/items?itemName=emeraldwalk.RunOnSave
+
+A [REPL](https://nodejs.org/api/repl.html) might help too. With the nodejs container do `kubectl exec -ti [pod] node`.
