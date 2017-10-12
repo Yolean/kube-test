@@ -14,7 +14,7 @@ data:
     #  request-promise-native@1.0.5 \
     #  --ignore-scripts >> /tmp/testlog
 
-    mocha --watch --reporter=tap $TESTS >> /tmp/testlog 2>&1 &
+    mocha --watch --reporter=tap --preserve-symlinks $TESTS >> /tmp/testlog 2>&1 &
 
     tail -f /tmp/testlog
 
