@@ -66,6 +66,8 @@ spec:
             - /bin/bash
             - -e
             - /test/run.sh
+          initialDelaySeconds: 10
+          periodSeconds: 10
         # Test quit on nonzero exit
         livenessProbe:
           exec:
