@@ -15,7 +15,8 @@ data:
     exec >> /tmp/testlog
     exec 2>&1
 
-    echo "No tests yet, at $(date -u --iso-8601='ns')"
+    echo "At $(date -u --iso-8601='ns'), replace this test using:"
+    echo " kubectl -n $POD_NAMESPACE cp `basename "$0"` $POD_NAME:$0"
 
     exit 0
 
@@ -44,6 +45,15 @@ spec:
       containers:
       - name: testcase
         image: solsson/kube-test-bash@sha256:c98d7fb5e9365eab391a5dcd4230fc6e72caf929c60f29ff091e3b0215124713
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
         # Test set up
         command:
         - /bin/bash
