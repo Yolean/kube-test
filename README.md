@@ -21,6 +21,8 @@ so they can serve as examples of accessing your services.
 
 ## Docker images
 
+You can use any container, any language, but these include some tools we typically need.
+
 ### [kube-test-bash](https://hub.docker.com/r/solsson/kube-test-bash/)
 
 ### [kube-test-nodejs](https://hub.docker.com/r/solsson/kube-test-nodejs/)
