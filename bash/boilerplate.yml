@@ -19,7 +19,7 @@ data:
 
     exit 0
 
-  continue.sh: |-
+  quit-on-nonzero-exit.sh: |-
     exec >> /tmp/testlog
     exec 2>&1
 
@@ -65,7 +65,7 @@ spec:
             command:
             - /bin/bash
             - -e
-            - /test/continue.sh
+            - /test/quit-on-nonzero-exit.sh
         volumeMounts:
         - name: config
           mountPath: /test
