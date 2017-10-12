@@ -29,14 +29,14 @@ You can use any container, any language, but these include some tools we typical
 
 ## Test development
 
-In nodejs tests you'll want to copy tests sources to the container,
-then generate a ConfigMap when you're done.
+A common pattern is to trigger container restart on ConfigMap changes,
+but you might have a time-consuming setup step and instead
+prefer to replace the run step's sourc(es) in the running container,
+and only generate a ConfigMap when you're done.
 
 If https://kubernetes.io/docs/tasks/debug-application-cluster/local-debugging/
-is too heavyweight, a `kubectl cp` based approach might suffice.
+is too heavyweight, a `kubectl cp` based approach might suffice. Could be automated using for example
 
-https://superuser.com/questions/181517/how-to-execute-a-command-whenever-a-file-changes
-
-https://stackoverflow.com/questions/1515730/is-there-a-command-like-watch-or-inotifywait-on-the-mac
-
-https://marketplace.visualstudio.com/items?itemName=emeraldwalk.RunOnSave
+ * https://superuser.com/questions/181517/how-to-execute-a-command-whenever-a-file-changes
+ * https://stackoverflow.com/questions/1515730/is-there-a-command-like-watch-or-inotifywait-on-the-mac
+ * https://marketplace.visualstudio.com/items?itemName=emeraldwalk.RunOnSave

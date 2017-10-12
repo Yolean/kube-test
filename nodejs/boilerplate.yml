@@ -28,7 +28,7 @@ data:
     for F in $(ls $TESTS); do echo "# To update $F run: kubectl cp $F $(hostname):$(pwd)/$F"; done
     # exit non-zero unless result of latest mocha run is positive
     # trigger next run (set periodSeconds in readinessProbe to increase time between checks)
-    touch $TESTS
+    touch -c $TESTS
     # exit 0 only if no failures
     tail -n 1 /tmp/lastresult | grep "# fail 0" > /dev/null
 
@@ -44,7 +44,6 @@ data:
 
       it("Runs through mocha", () => {
         console.log('Running', new Date());
-        throw new Error('a');
       });
 
     });
