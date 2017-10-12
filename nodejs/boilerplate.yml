@@ -25,6 +25,7 @@ data:
     tail -n 3 /tmp/testlog > /tmp/lastresult
     echo ""
     echo "### Checking latest result, at $(date -u --iso-8601='ns')"
+    for F in $(ls $TESTS); do echo "# To update $F run: kubectl cp $F $(hostname):$(pwd)/$F"; done
     # exit non-zero unless result of latest mocha run is positive
     # trigger next run (set periodSeconds in readinessProbe to increase time between checks)
     touch $TESTS
