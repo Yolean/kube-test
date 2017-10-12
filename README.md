@@ -27,3 +27,18 @@ You can use any container, any language, but these include some tools we typical
 
 ### [kube-test-nodejs](https://hub.docker.com/r/solsson/kube-test-nodejs/)
 
+## Test development
+
+A common pattern is to trigger container restart on ConfigMap changes,
+but you might have a time-consuming setup step and instead
+prefer to replace the run step's sourc(es) in the running container,
+and only generate a ConfigMap when you're done.
+
+If https://kubernetes.io/docs/tasks/debug-application-cluster/local-debugging/
+is too heavyweight, a `kubectl cp` based approach might suffice. Could be automated using for example
+
+ * https://superuser.com/questions/181517/how-to-execute-a-command-whenever-a-file-changes
+ * https://stackoverflow.com/questions/1515730/is-there-a-command-like-watch-or-inotifywait-on-the-mac
+ * https://marketplace.visualstudio.com/items?itemName=emeraldwalk.RunOnSave
+
+A [REPL](https://nodejs.org/api/repl.html) might help too. With the nodejs container do `kubectl exec -ti [pod] node`.

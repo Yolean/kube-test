@@ -19,7 +19,7 @@ data:
 
     exit 0
 
-  continue.sh: |-
+  quit-on-nonzero-exit.sh: |-
     exec >> /tmp/testlog
     exec 2>&1
 
@@ -33,6 +33,8 @@ metadata:
   namespace: default
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -42,9 +44,6 @@ spec:
       containers:
       - name: testcase
         image: solsson/kube-test-bash@sha256:c98d7fb5e9365eab391a5dcd4230fc6e72caf929c60f29ff091e3b0215124713
-        env:
-        - name: DUMMY
-          value: x
         # Test set up
         command:
         - /bin/bash
@@ -63,7 +62,7 @@ spec:
             command:
             - /bin/bash
             - -e
-            - /test/continue.sh
+            - /test/quit-on-nonzero-exit.sh
         volumeMounts:
         - name: config
           mountPath: /test
