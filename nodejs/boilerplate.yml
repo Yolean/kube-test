@@ -20,6 +20,8 @@ data:
     exec >> /tmp/testlog
     exec 2>&1
 
+    # touch any of your test files here to trigger a mocha re-run
+
     echo "No tests yet, at $(date -u --iso-8601='ns')"
 
     exit 0
