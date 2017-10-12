@@ -9,20 +9,23 @@ data:
   setup.sh: |-
     touch /tmp/testlog
 
-    npm install -g \
-      request@2.83.0 \
-      request-promise-native@1.0.5 \
-      --ignore-scripts >> /tmp/testlog
+    #npm install -g \
+    #  request@2.83.0 \
+    #  request-promise-native@1.0.5 \
+    #  --ignore-scripts >> /tmp/testlog
 
-    mocha --watch >> /tmp/testlog 2>&1
+    mocha --watch --reporter=tap $TESTS >> /tmp/testlog 2>&1 &
+
+    tail -f /tmp/testlog
 
   run.sh: |-
     exec >> /tmp/testlog
     exec 2>&1
 
-    # touch any of your test files here to trigger a mocha re-run
-
-    echo "No tests yet, at $(date -u --iso-8601='ns')"
+    # exit non-zero unless result of latest mocha run is positive
+    tail -n 1 /tmp/testlog | grep "# fail 0"
+    # trigger next run (set periodSeconds in readinessProbe to increase time between checks)
+    touch $TESTS
 
     exit 0
 
@@ -31,6 +34,17 @@ data:
     exec 2>&1
 
     exit 0
+
+  # tests, that you might want to develop using REPL
+  test-something.js: |-
+    describe("A test", () => {
+
+      it("Runs through mocha", () => {
+        console.log('Running', new Date());
+        throw new Error('a');
+      });
+
+    });
 
 ---
 apiVersion: apps/v1beta1
@@ -51,9 +65,10 @@ spec:
       containers:
       - name: testcase
         image: solsson/kube-test-nodejs@sha256:1a4933cea8f7da9e5d51ec41ee5bcf8b387b3eb075f8b1e772a3821325fd3301
+        workingDir: /test
         env:
-        - name: DUMMY
-          value: x
+        - name: TESTS
+          value: "*.js"
         # Test set up
         command:
         - /bin/bash
