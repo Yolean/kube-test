@@ -1,0 +1,73 @@
+---
+kind: ConfigMap
+metadata:
+  name: kube-test-boilerplate
+  namespace: default
+apiVersion: v1
+data:
+
+  setup.sh: |-
+    touch /tmp/testlog
+
+    mocha --watch >> /tmp/testlog 2>&1
+
+  run.sh: |-
+    exec >> /tmp/testlog
+    exec 2>&1
+
+    echo "No tests yet, at $(date -u --iso-8601='ns')"
+
+    exit 0
+
+  continue.sh: |-
+    exec >> /tmp/testlog
+    exec 2>&1
+
+    exit 0
+
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: kube-test-boilerplate
+  namespace: default
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        test-target: kube-test
+        test-type: readiness
+    spec:
+      containers:
+      - name: testcase
+        image: solsson/kube-test-nodejs@sha256:1a4933cea8f7da9e5d51ec41ee5bcf8b387b3eb075f8b1e772a3821325fd3301
+        env:
+        - name: DUMMY
+          value: x
+        # Test set up
+        command:
+        - /bin/bash
+        - -e
+        - /test/setup.sh
+        # Test run, again and again
+        readinessProbe:
+          exec:
+            command:
+            - /bin/bash
+            - -e
+            - /test/run.sh
+        # Test quit on nonzero exit
+        livenessProbe:
+          exec:
+            command:
+            - /bin/bash
+            - -e
+            - /test/continue.sh
+        volumeMounts:
+        - name: config
+          mountPath: /test
+      volumes:
+      - name: config
+        configMap:
+          name: kube-test-boilerplate
