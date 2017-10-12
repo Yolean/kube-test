@@ -1,20 +1,23 @@
 # kube-test
 
-A test pod is one with labels:
+A test pod is one with labels
 
 ```yaml
         test-target: your-project
         test-type: readiness
 ```
 
-That has status `NotReady` whenever an assertion fails.
+...that has status `NotReady` whenever an assertion fails.
 This means you can see the status of your services using:
 
 ```bash
 kubectl get pods -l test-type=readiness -w --all-namespaces
 ```
 
-Add `,test-target=your-project` to `-l` to see only your tests. 
+(add `,test-target=your-project` to `-l` to see only your tests)
+
+Tests typically live in the `default` namespace, rather than that of your project,
+so they can serve as examples of accessing your services.
 
 ## Docker images
 
