@@ -19,7 +19,7 @@ data:
 
     tail -f /tmp/testlog
 
-  run.sh: |-
+  test.sh: |-
     exec >> /tmp/testlog
     exec 2>&1
 
@@ -74,19 +74,16 @@ spec:
         env:
         - name: TESTS
           value: "*.js"
-        # Test set up
         command:
         - /bin/bash
         - -e
         - /test/setup.sh
-        # Test run, again and again
         readinessProbe:
           exec:
             command:
             - /bin/bash
             - -e
-            - /test/run.sh
-        # Test quit on nonzero exit
+            - /test/test.sh
         livenessProbe:
           exec:
             command:

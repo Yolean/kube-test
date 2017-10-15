@@ -11,7 +11,7 @@ data:
 
     tail -f /tmp/testlog
 
-  run.sh: |-
+  test.sh: |-
     exec >> /tmp/testlog
     exec 2>&1
 
@@ -54,21 +54,18 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        # Test set up
         command:
         - /bin/bash
         - -e
         - /test/setup.sh
-        # Test run, again and again
         readinessProbe:
           exec:
             command:
             - /bin/bash
             - -e
-            - /test/run.sh
+            - /test/test.sh
           initialDelaySeconds: 10
           periodSeconds: 10
-        # Test quit on nonzero exit
         livenessProbe:
           exec:
             command:
