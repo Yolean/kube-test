@@ -2,7 +2,7 @@
 kind: ConfigMap
 metadata:
   name: kube-test-boilerplate
-  namespace: default
+  namespace: test
 apiVersion: v1
 data:
 
@@ -56,7 +56,7 @@ apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   name: kube-test-boilerplate
-  namespace: default
+  namespace: test
 spec:
   replicas: 1
   strategy:

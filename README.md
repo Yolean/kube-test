@@ -16,9 +16,6 @@ kubectl get pods -l test-type=readiness -w --all-namespaces
 
 (add `,test-target=your-project` to `-l` to see only your tests)
 
-Tests typically live in the `default` namespace, rather than that of your project,
-so they can serve as examples of accessing your services.
-
 ## Docker images
 
 You can use any container, any language, but these include some tools we typically need.
